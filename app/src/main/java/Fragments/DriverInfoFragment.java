@@ -4,36 +4,36 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import app.mono.com.monoapp.R;
+import butterknife.BindView;
 
 import com.google.android.gms.plus.PlusOneButton;
 
-/**
- * A fragment with a Google +1 button.
- * Activities that contain this fragment must implement the
- * {@link DriverInfoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DriverInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DriverInfoFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    // The request code must be 0 or greater.
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
-    // The URL to +1.  Must be a valid URL.
-    private final String PLUS_ONE_URL = "http://developer.android.com";
-    // TODO: Rename and change types of parameters
+
+
     private String mParam1;
     private String mParam2;
-    private Button mPlusOneButton;
+
+    @BindView(R.id.driver_info_name)  AppCompatEditText driverInfoName;
+    @BindView(R.id.driver_info_reg) AppCompatEditText driverInfoReg;
+    @BindView(R.id.driver_info_vec) AppCompatEditText driverInfoVec;
+    @BindView(R.id.driver_info_range) AppCompatEditText driverInfoModel;
+    @BindView(R.id.driver_info_model) AppCompatEditText driverInfoRange;
+    @BindView(R.id.driver_info_info) AppCompatEditText driverInfoInfo;
+    @BindView(R.id.driver_info_sub_btn) Button summitButton;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,8 +74,7 @@ public class DriverInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driver_info, container, false);
 
-        //Find the +1 button
-        mPlusOneButton = (Button) view.findViewById(R.id.plus_one_button);
+
 
         return view;
     }
