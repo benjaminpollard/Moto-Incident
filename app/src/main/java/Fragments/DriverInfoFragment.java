@@ -1,4 +1,4 @@
-package app.mono.com.monoapp;
+package Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,38 +7,54 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import app.mono.com.monoapp.R;
+
+import com.google.android.gms.plus.PlusOneButton;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment with a Google +1 button.
  * Activities that contain this fragment must implement the
- * {@link DescriptionFragment.OnFragmentInteractionListener} interface
+ * {@link DriverInfoFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DescriptionFragment#newInstance} factory method to
+ * Use the {@link DriverInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DescriptionFragment extends Fragment {
+public class DriverInfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    // The request code must be 0 or greater.
+    private static final int PLUS_ONE_REQUEST_CODE = 0;
+    // The URL to +1.  Must be a valid URL.
+    private final String PLUS_ONE_URL = "http://developer.android.com";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button mPlusOneButton;
 
     private OnFragmentInteractionListener mListener;
 
-    public DescriptionFragment() {
+    public DriverInfoFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment DriverInfoFragment.
+     */
     // TODO: Rename and change types and number of parameters
-    public static DescriptionFragment newInstance() {
-        DescriptionFragment fragment = new DescriptionFragment();
+    public static DriverInfoFragment newInstance(String param1, String param2) {
+        DriverInfoFragment fragment = new DriverInfoFragment();
         Bundle args = new Bundle();
-
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +72,20 @@ public class DescriptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_description, container, false);
+        View view = inflater.inflate(R.layout.fragment_driver_info, container, false);
+
+        //Find the +1 button
+        mPlusOneButton = (Button) view.findViewById(R.id.plus_one_button);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -97,4 +126,5 @@ public class DescriptionFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
