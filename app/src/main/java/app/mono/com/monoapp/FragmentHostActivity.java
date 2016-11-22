@@ -1,5 +1,6 @@
 package app.mono.com.monoapp;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,21 +19,25 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Fragments.DescriptionFragment;
+import Fragments.DriverInfoFragment;
+import Fragments.GalleryFragment;
+import Fragments.LocationFragment;
+
 public class FragmentHostActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    public static final String SET_PAGE = "PAGEE";
+    public static final String SET_EXTRA = "extrasforfragmenthost";
+    public static final String INCDIENT_TYPE_THEIFT = "INCDIENT_TYPE_THEIFT";
+    public static final String INCDIENT_TYPE_COLLSION = "INCDIENT_TYPE_COLLSION";
+    public static final String INCDIENT_TYPE_CTYLE = "INCDIENT_TYPE_CTYLE";
+    public static final String INCDIENT_TYPE_BREAKDOWN = "INCDIENT_TYPE_BREAKDOWN";
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+
+    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -42,27 +47,66 @@ public class FragmentHostActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        String incidentType = intent.getStringExtra(SET_EXTRA);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),GetFragmentsForIncidentType(incidentType));
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(intent.getIntExtra(SET_PAGE,0));
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
     }
+    private List<Fragment> GetFragmentsForIncidentType(String incidentType) {
 
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        //all the same but most lightly will change in time
+        switch (incidentType)
+        {
+            case INCDIENT_TYPE_THEIFT :
+            case INCDIENT_TYPE_COLLSION :
+            case INCDIENT_TYPE_CTYLE :
+            case INCDIENT_TYPE_BREAKDOWN :
+                fragments.add(DriverInfoFragment.newInstance("",""));
+                fragments.add(DriverInfoFragment.newInstance("",""));
+                fragments.add(DriverInfoFragment.newInstance("",""));
+                fragments.add(DriverInfoFragment.newInstance("",""));
+                break;
 
+            default:
+                return fragments;
+        }
+        return fragments;
+    }
+    private int GetFragmentsStarttingPos(String incidentType) {
+
+       int startingPos = 0;
+        //all the same but most lightly will change in time
+        switch (incidentType)
+        {
+            case INCDIENT_TYPE_THEIFT :
+                break;
+            case INCDIENT_TYPE_COLLSION :
+                startingPos = 1;
+                break;
+            case INCDIENT_TYPE_CTYLE :
+                startingPos = 2;
+                break;
+            case INCDIENT_TYPE_BREAKDOWN :
+                startingPos = 3;
+                break;
+
+            default:
+             break;
+        }
+        return startingPos;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,74 +130,32 @@ public class FragmentHostActivity extends AppCompatActivity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_fragment_host, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        List<Fragment> fragments;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> _fragments) {
             super(fm);
+            fragments = _fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return fragments.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
+         return "";
         }
     }
 }
