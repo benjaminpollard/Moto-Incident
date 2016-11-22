@@ -11,7 +11,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
 
-    <string name="sumbit">sumbit</string>
+    <string name="sumbit">Sumbit</string>
     <string name="descrip_hint_text">Enter your description here</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -23,6 +23,11 @@
     <string name="driver_info_model">Vehicle Model</string>
     <string name="driver_info_add_info">Additional Information</string>
     <string name="driver_info_sumit_btn">Submit Information</string>
+    <string name="drive_informasion">Drive Informasion</string>
+    <string name="add_location">Add Location</string>
+    <string name="add_image">Add Image</string>
+    <string name="descrition">Descrition</string>
+    <string name="title_activity_fragment_host">FragmentHostActivity</string>
 
 
 </resources>
