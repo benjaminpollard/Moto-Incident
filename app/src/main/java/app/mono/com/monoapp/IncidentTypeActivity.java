@@ -7,18 +7,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class IncidentTypeActivity extends AppCompatActivity {
 
-    private Button buttonOne;
-    private Button buttonTwo;
-    private Button buttonThree;
-    private Button buttonFour;
-    private Button buttonBack;
+    @BindView(R.id.button_incedenttype_one) Button buttonOne;
+    @BindView(R.id.button_incedenttype_two) Button buttonTwo;
+    @BindView(R.id.button_incedenttype_three) Button buttonThree;
+    @BindView(R.id.button_incedenttype_four) Button buttonFour;
+    @BindView(R.id.button_incedenttype_back) Button buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incedent_type_actvitiy);
+
+        ButterKnife.bind(this);
 
         SetUp();
 
@@ -26,11 +31,6 @@ public class IncidentTypeActivity extends AppCompatActivity {
     }
 
     private void SetUp() {
-        buttonOne = (Button)findViewById(R.id.button_incedenttype_one);
-        buttonTwo = (Button)findViewById(R.id.button_incedenttype_two);
-        buttonThree = (Button)findViewById(R.id.button_incedenttype_three);
-        buttonFour = (Button)findViewById(R.id.button_incedenttype_four);
-        buttonBack = (Button)findViewById(R.id.button_incedenttype_back);
 
         SetUpOnClicks();
 
