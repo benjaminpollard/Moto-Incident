@@ -96,7 +96,7 @@
         android:textSize="16dp"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="@string/drive_informasion"
+        android:text="@string/sumbit"
         android:id="@+id/button_theft_summit"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/activity_vertical_margin"
