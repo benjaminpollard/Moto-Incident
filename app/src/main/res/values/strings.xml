@@ -28,6 +28,7 @@
     <string name="add_image">Add Image</string>
     <string name="descrition">Descrition</string>
     <string name="title_activity_fragment_host">FragmentHostActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 
 </resources>
