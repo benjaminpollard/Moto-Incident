@@ -45,8 +45,6 @@ public class FragmentHostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_host);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         String incidentType = intent.getStringExtra(SET_EXTRA);
@@ -73,7 +71,7 @@ public class FragmentHostActivity extends AppCompatActivity {
             case INCDIENT_TYPE_COLLSION :
             case INCDIENT_TYPE_CTYLE :
             case INCDIENT_TYPE_BREAKDOWN :
-                fragments.add(DriverInfoFragment.newInstance("",""));
+                fragments.add(DescriptionFragment.newInstance());
                 fragments.add(DriverInfoFragment.newInstance("",""));
                 fragments.add(DriverInfoFragment.newInstance("",""));
                 fragments.add(DriverInfoFragment.newInstance("",""));
