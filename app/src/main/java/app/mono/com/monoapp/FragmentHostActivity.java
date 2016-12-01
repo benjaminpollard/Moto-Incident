@@ -26,8 +26,9 @@ import Fragments.DescriptionFragment;
 import Fragments.DriverInfoFragment;
 import Fragments.GalleryFragment;
 import Fragments.LocationFragment;
+import Models.LocationModel;
 
-public class FragmentHostActivity extends AppCompatActivity {
+public class FragmentHostActivity extends AppCompatActivity implements LocationFragment.OnLocationFragmentSubmitted {
 
     public static final String SET_PAGE = "PAGEE";
     public static final String SET_EXTRA = "extrasforfragmenthost";
@@ -74,7 +75,7 @@ public class FragmentHostActivity extends AppCompatActivity {
                 fragments.add(DescriptionFragment.newInstance());
                 fragments.add(DriverInfoFragment.newInstance("",""));
                 fragments.add(DriverInfoFragment.newInstance("",""));
-                fragments.add(DriverInfoFragment.newInstance("",""));
+                fragments.add(LocationFragment.newInstance("",""));
                 break;
 
             default:
@@ -125,6 +126,11 @@ public class FragmentHostActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void SummitLocation(LocationModel loc) {
+
     }
 
     /**
