@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MonoApp</string>
+    <string name="app_name">MotoApp</string>
     <string name="action_settings">Settings</string>
 
     <string name="incidenttype_buttton_one">THEFT</string>
@@ -29,6 +29,8 @@
     <string name="descrition">Descrition</string>
     <string name="title_activity_fragment_host">FragmentHostActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="loc_street_or_road">Street or Road</string>
+    <string name="loc_city">City</string>
 
 
 </resources>
