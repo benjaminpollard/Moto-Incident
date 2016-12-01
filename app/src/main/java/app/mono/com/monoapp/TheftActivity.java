@@ -81,7 +81,8 @@ public class TheftActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetIntentAndStartingPage(v.getContext(),0);
+              Activity activity = (Activity) v.getContext();
+                activity.finish();
             }
         });
     }
