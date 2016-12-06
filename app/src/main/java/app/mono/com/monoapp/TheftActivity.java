@@ -4,18 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+
+import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.tangxiaolv.telegramgallery.GalleryConfig;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TheftActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 228;
     @BindView(R.id.button_theft_des) Button description;
     @BindView(R.id.button_theft_image) Button addImage;
     @BindView(R.id.button_theft_loc) Button locasion;
@@ -52,7 +55,7 @@ public class TheftActivity extends AppCompatActivity {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetIntentAndStartingPage(v.getContext(),1);
+                StartGallery();
             }
         });
 
@@ -85,5 +88,26 @@ public class TheftActivity extends AppCompatActivity {
                 activity.finish();
             }
         });
+    }
+    private void StartGallery(){
+        GalleryConfig config = new GalleryConfig.Build()
+                .limitPickPhoto(6)
+                .singlePhoto(false)
+                .hintOfPick("photo of incident")
+                .filterMimeTypes(new String[]{"image/jpeg"})
+                .build();
+        GalleryActivity.openActivity(this, REQUEST_CODE, config);
+    }
+
+    //process result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && data!= null)
+        {
+            List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+            //todo save photos
+            //list of videos of seleced
+            List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
+        }
     }
 }
