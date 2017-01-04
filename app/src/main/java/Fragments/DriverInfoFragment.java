@@ -5,14 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import Helpers.ToolBarHelper;
 import app.mono.com.monoapp.R;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import com.google.android.gms.plus.PlusOneButton;
 
@@ -33,7 +36,7 @@ public class DriverInfoFragment extends Fragment {
     @BindView(R.id.driver_info_model) AppCompatEditText driverInfoRange;
     @BindView(R.id.driver_info_info) AppCompatEditText driverInfoInfo;
     @BindView(R.id.driver_info_sub_btn) Button summitButton;
-
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,8 +76,9 @@ public class DriverInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_driver_info, container, false);
+        ButterKnife.bind(this,view);
 
-
+        ToolBarHelper.SetUpFragmentToolBar(this,toolbar,getActivity().getString(R.string.description_fragment_name));
 
         return view;
     }

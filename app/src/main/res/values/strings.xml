@@ -32,5 +32,10 @@
     <string name="loc_street_or_road">Street or Road</string>
     <string name="loc_city">City</string>
 
+    <!-- Fragment Names -->
+    <string name="description_fragment_name">Description</string>
+    <string name="location_fragment_name">Location</string>
+    <string name="driver_informacion_fragment_name">Driver Informacion</string>
+
 
 </resources>

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import Helpers.ToolBarHelper;
 import Models.LocationModel;
 import app.mono.com.monoapp.R;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -38,14 +41,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     private LocationModel locationModel;
     private OnLocationFragmentSubmitted mListener;
 
-    @BindView(R.id.loc_mapview)
-    MapView mapView;
-    @BindView(R.id.loc_city)
-    AppCompatEditText city;
-    @BindView(R.id.loc_road)
-    AppCompatEditText road;
+    @BindView(R.id.loc_mapview) MapView mapView;
+    @BindView(R.id.loc_city) AppCompatEditText city;
+    @BindView(R.id.loc_road) AppCompatEditText road;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     GoogleMap map;
-
 
     public LocationFragment() {
         // Required empty public constructor
@@ -74,11 +74,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_location, container, false);
+        ButterKnife.bind(this, view);
+
         mapView.onCreate(savedInstanceState);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
 
         mapView.getMapAsync(this);
+
+        ToolBarHelper.SetUpFragmentToolBar(this,toolbar,getActivity().getString(R.string.description_fragment_name));
 
         return inflater.inflate(R.layout.fragment_location, container, false);
     }
@@ -112,6 +115,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
+        map.getUiSettings().setMyLocationButtonEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
