@@ -35,7 +35,12 @@
     <!-- Fragment Names -->
     <string name="description_fragment_name">Description</string>
     <string name="location_fragment_name">Location</string>
-    <string name="driver_informacion_fragment_name">Driver Informacion</string>
+    <string name="driver_informacion_fragment_name">Driver Information</string>
 
+    <!-- Fragment Names -->
+    <string name="description_not_enetered">Description not filled out </string>
+    <string name="location_not_enetered">Location not filled out</string>
+    <string name="info_not_enetered">Driver Information not filled out</string>
+    <string name="gallery_not_enetered">Gallery not filled out</string>
 
 </resources>
