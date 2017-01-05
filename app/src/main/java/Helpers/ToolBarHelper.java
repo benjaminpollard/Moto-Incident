@@ -16,6 +16,7 @@ public class ToolBarHelper {
         activity.setSupportActionBar( bar );
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowCustomEnabled(false);
+        activity.getSupportActionBar().setTitle(title);
         activity.setTitle(title);
     }
 }
