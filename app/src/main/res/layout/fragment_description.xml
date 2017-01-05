@@ -19,7 +19,9 @@
         android:background="@drawable/roundedbox"
         android:padding="4dp"
         android:layout_weight="0.75"
-        android:gravity="top" />
+        android:gravity="top"
+        android:id="@+id/desc_frag_edit_text"
+        />
     <Button
         style="@style/ActionButton"
         android:elevation="2dp"
@@ -34,7 +36,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:text="@string/sumbit"
-        android:id="@+id/button_incedenttype_back"
+        android:id="@+id/desc_frag_button_summit"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.25"
         android:maxHeight="200dp"

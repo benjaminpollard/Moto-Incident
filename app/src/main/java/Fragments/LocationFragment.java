@@ -42,7 +42,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     public LocationFragment() {
         // Required empty public constructor
     }
-    
+
     public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
         return fragment;

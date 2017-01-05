@@ -3,8 +3,11 @@ package app.mono.com.monoapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,8 +16,12 @@ import com.tangxiaolv.telegramgallery.GalleryConfig;
 
 import java.util.List;
 
+import Models.GalleryModel;
+import Models.RealmStringWrapper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmList;
 
 public class TheftActivity extends AppCompatActivity {
 
@@ -105,9 +112,22 @@ public class TheftActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE && data!= null)
         {
             List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
-            //todo save photos
+
+            GalleryModel model = new GalleryModel();
+            RealmList<RealmStringWrapper> realmPhotos = new RealmList<RealmStringWrapper>();
+            for (String photo : photos)
+            {
+                RealmStringWrapper temp =  new RealmStringWrapper();
+                temp.setString(photo);
+                realmPhotos.add(temp);
+            }
+            model.setPhotos(realmPhotos);
+
+
+            //not supproting video as of right now
             //list of videos of seleced
-            List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
+           // List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
         }
     }
+
 }
