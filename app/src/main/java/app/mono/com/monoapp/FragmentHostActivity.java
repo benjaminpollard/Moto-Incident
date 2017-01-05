@@ -62,6 +62,21 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private List<Fragment> GetFragmentsForIncidentType(String incidentType) {
 
         List<Fragment> fragments = new ArrayList<Fragment>();
@@ -73,9 +88,8 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
             case INCDIENT_TYPE_CTYLE :
             case INCDIENT_TYPE_BREAKDOWN :
                 fragments.add(DescriptionFragment.newInstance());
-                fragments.add(DriverInfoFragment.newInstance("",""));
-                fragments.add(DriverInfoFragment.newInstance("",""));
-                fragments.add(LocationFragment.newInstance("",""));
+                fragments.add(DriverInfoFragment.newInstance());
+                fragments.add(LocationFragment.newInstance());
                 break;
 
             default:
