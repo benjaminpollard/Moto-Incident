@@ -1,15 +1,18 @@
 package Models;
 
+
 import com.google.android.gms.maps.model.LatLng;
+
+import io.realm.RealmObject;
 
 /**
  * Created by Ben on 01/12/2016.
  */
 
-public class LocationModel {
+public class LocationModel  extends RealmObject {
     private String road ;
     private String city ;
-    private LatLng latLong;
+    private RealmLatLong latLong;
 
     public String getRoad() {
         return road;
@@ -29,11 +32,11 @@ public class LocationModel {
 
 
 
-    public LatLng getLatLong() {
+    public RealmLatLong getLatLong() {
         return latLong;
     }
 
-    public void setLatLong(LatLng latLong) {
+    public void setLatLong(RealmLatLong latLong) {
         this.latLong = latLong;
     }
 
