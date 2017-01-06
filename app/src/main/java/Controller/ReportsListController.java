@@ -28,14 +28,14 @@ public class ReportsListController {
         return reportModelsList;
     }
 
-    public List<ReportModel>  SaveReport()
+    public void  SaveReport(ReportModel reportToSave)
     {
-        List<ReportModel> reportModelsList = new ArrayList<>();
-        RealmQuery<ReportModel> items = Realm.getDefaultInstance().where(ReportModel.class);
-        RealmResults<ReportModel> results = items.findAll();
-        reportModelsList.addAll(results);
-
-        return reportModelsList;
+//        List<ReportModel> reportModelsList = new ArrayList<>();
+//        RealmQuery<ReportModel> items = Realm.getDefaultInstance().where(ReportModel.class);
+//        RealmResults<ReportModel> results = items.findAll();
+//        reportModelsList.addAll(results);
+//
+//        return reportModelsList;reportModelsList
     }
 
 

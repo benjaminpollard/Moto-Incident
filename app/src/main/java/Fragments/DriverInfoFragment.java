@@ -38,7 +38,7 @@ public class DriverInfoFragment extends Fragment {
     @BindView(R.id.driver_info_sub_btn) Button summitButton;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    private OnFragmentInteractionListener mListener;
+    private OnDriverInfoFragmentInteractionListener mListener;
 
     public DriverInfoFragment() {
         // Required empty public constructor
@@ -77,21 +77,26 @@ public class DriverInfoFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onDriveInfoFragmentInteraction(driverInfoName.getText().toString()
+                    ,driverInfoReg.getText().toString()
+                    ,driverInfoVec.getText().toString()
+                    ,driverInfoModel.getText().toString()
+                    ,driverInfoRange.getText().toString(),
+                     driverInfoInfo.getText().toString());
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnDriverInfoFragmentInteractionListener) {
+            mListener = (OnDriverInfoFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -100,19 +105,8 @@ public class DriverInfoFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnDriverInfoFragmentInteractionListener {
+        void onDriveInfoFragmentInteraction(String driverInfoName,String driverInfoReg,String driverInfoVec,String driverInfoModel, String driverInfoRange, String driverInfoInfo);
     }
 
 }

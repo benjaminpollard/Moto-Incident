@@ -8,6 +8,7 @@ import Models.DescriptionModel;
 import Models.DriverInformationModel;
 import Models.GalleryModel;
 import Models.LocationModel;
+import Models.RealmLatLong;
 import Models.ReportModel;
 import io.realm.Realm;
 
@@ -68,7 +69,7 @@ public class ReportControllerTests {
     }
     @Test
     public void CanLocastionModel() throws Exception {
-        LocationModel testItem = new LocationModel();
+        RealmLatLong testItem = new RealmLatLong();
         controller.AddLocationModelReport(testItem);
         ReportModel model = controller.GetReport();
         assertEquals(model.getLocationModel(),testItem);

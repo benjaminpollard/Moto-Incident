@@ -7,9 +7,11 @@ import Models.DescriptionModel;
 import Models.DriverInformationModel;
 import Models.GalleryModel;
 import Models.LocationModel;
+import Models.RealmLatLong;
 import Models.ReportModel;
 import app.mono.com.monoapp.R;
 import io.realm.Realm;
+import io.realm.RealmLatLongRealmProxy;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -72,7 +74,7 @@ public class ReportController {
         SaveItem();
     }
 
-    public void AddLocationModelReport(LocationModel locationModel)
+    public void AddLocationModelReport(RealmLatLong locationModel)
     {
         if(locationModel == null)
             return;

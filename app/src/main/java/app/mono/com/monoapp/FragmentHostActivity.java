@@ -1,6 +1,7 @@
 package app.mono.com.monoapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,13 +23,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Controller.ReportController;
 import Fragments.DescriptionFragment;
 import Fragments.DriverInfoFragment;
 import Fragments.GalleryFragment;
 import Fragments.LocationFragment;
+import Helpers.ModelBuilderHelper;
 import Models.LocationModel;
 
-public class FragmentHostActivity extends AppCompatActivity implements LocationFragment.OnLocationFragmentSubmitted {
+public class FragmentHostActivity extends AppCompatActivity implements LocationFragment.OnLocationFragmentSubmitted , DriverInfoFragment.OnDriverInfoFragmentInteractionListener
+ , DescriptionFragment.OnDescriptionFragmentInteractionListener {
 
     public static final String SET_PAGE = "PAGEE";
     public static final String SET_EXTRA = "extrasforfragmenthost";
@@ -37,6 +41,7 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
     public static final String INCDIENT_TYPE_CTYLE = "INCDIENT_TYPE_CTYLE";
     public static final String INCDIENT_TYPE_BREAKDOWN = "INCDIENT_TYPE_BREAKDOWN";
 
+    private ReportController controller;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -123,7 +128,17 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
 
     @Override
     public void SummitLocation(LocationModel loc) {
+        controller.AddLocationModelReport(ModelBuilderHelper.locationModelBuilder(loc));
+    }
 
+    @Override
+    public void onDriveInfoFragmentInteraction(String driverInfoName, String driverInfoReg, String driverInfoVec, String driverInfoModel, String driverInfoRange, String driverInfoInfo) {
+        controller.AddDriverInformasionReport(ModelBuilderHelper.DescriptionModelBuilder(driverInfoName,driverInfoReg,driverInfoModel,driverInfoVec,driverInfoRange,driverInfoInfo));
+    }
+
+    @Override
+    public void onDescriptionFragmentInteraction(String desc) {
+        controller.AddDescriptionToReport(ModelBuilderHelper.DescriptionModelBuilder(desc));
     }
 
     /**

@@ -54,14 +54,16 @@ public class DescriptionFragment extends Fragment {
 
         ToolBarHelper.SetUpFragmentToolBar(this,toolbar,getActivity().getString(R.string.description_fragment_name));
 
-        return view;
-    }
+        summit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onDescriptionFragmentInteraction(descEditText.getText().toString());
+                }
+            }
+        });
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String des) {
-        if (mListener != null) {
-            mListener.onDescriptionFragmentInteraction(des);
-        }
+        return view;
     }
 
     @Override
@@ -81,18 +83,7 @@ public class DescriptionFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnDescriptionFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onDescriptionFragmentInteraction(String desc);
     }
 }

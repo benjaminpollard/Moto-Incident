@@ -11,11 +11,11 @@ public class ReportModel extends RealmObject {
     DriverInformationModel driverInformationModel;
     GalleryModel galleryModel;
 
-    public LocationModel getLocationModel() {
+    public RealmLatLong getLocationModel() {
         return locationModel;
     }
 
-    public void setLocationModel(LocationModel locationModel) {
+    public void setLocationModel(RealmLatLong locationModel) {
         this.locationModel = locationModel;
     }
 
@@ -43,5 +43,5 @@ public class ReportModel extends RealmObject {
         this.descriptionModel = descriptionModel;
     }
 
-    LocationModel locationModel;
+    RealmLatLong locationModel;
 }

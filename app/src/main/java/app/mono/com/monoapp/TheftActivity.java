@@ -16,6 +16,9 @@ import com.tangxiaolv.telegramgallery.GalleryConfig;
 
 import java.util.List;
 
+import Controller.ReportController;
+import Controller.ReportsListController;
+import Helpers.ModelBuilderHelper;
 import Models.GalleryModel;
 import Models.RealmStringWrapper;
 import butterknife.BindView;
@@ -32,6 +35,8 @@ public class TheftActivity extends AppCompatActivity {
     @BindView(R.id.button_theft_info) Button info;
     @BindView(R.id.button_theft_back) Button back;
     @BindView(R.id.button_theft_summit) Button sumbit;
+
+    private ReportController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,9 @@ public class TheftActivity extends AppCompatActivity {
         sumbit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //save to dabase
+                ReportsListController controller = new ReportsListController();
+                controller.SaveReport();
                //todo summit to email
 
             }
@@ -111,18 +119,7 @@ public class TheftActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE && data!= null)
         {
-            List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
-
-            GalleryModel model = new GalleryModel();
-            RealmList<RealmStringWrapper> realmPhotos = new RealmList<RealmStringWrapper>();
-            for (String photo : photos)
-            {
-                RealmStringWrapper temp =  new RealmStringWrapper();
-                temp.setString(photo);
-                realmPhotos.add(temp);
-            }
-            model.setPhotos(realmPhotos);
-
+            controller.AddGalleryItemsToReport(ModelBuilderHelper.GalleryModelBuilder((List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS)));
 
             //not supproting video as of right now
             //list of videos of seleced

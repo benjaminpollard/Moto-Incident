@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import Controller.ReportController;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -17,6 +18,7 @@ public class IncidentTypeActivity extends AppCompatActivity {
     @BindView(R.id.button_incedenttype_three) Button buttonThree;
     @BindView(R.id.button_incedenttype_four) Button buttonFour;
     @BindView(R.id.button_incedenttype_back) Button buttonBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
