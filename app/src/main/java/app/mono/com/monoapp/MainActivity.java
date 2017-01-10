@@ -10,13 +10,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.button_main_activity_viewoldreports)
+    Button pastReports;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
             SetUp();
 
@@ -24,12 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void SetUp()
     {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Activity activity = (Activity) view.getContext();
                 activity.startActivity(new Intent(activity,IncidentTypeActivity.class));
+            }
+        });
+
+        pastReports.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(view.getContext(),PastReportsActivity.class);
+                startActivity(intent);
             }
         });
 
