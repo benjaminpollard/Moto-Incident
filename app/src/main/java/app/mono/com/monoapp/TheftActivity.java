@@ -5,22 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.identity.intents.Address;
+import com.google.android.gms.maps.model.LatLng;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import Controller.ReportController;
 import Controller.ReportsListController;
 import Helpers.ModelBuilderHelper;
+import Models.DriverInformationModel;
 import Models.GalleryModel;
 import Models.RealmStringWrapper;
+import Models.ReportModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -90,9 +100,9 @@ public class TheftActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //save to dabase
                 ReportsListController controller = new ReportsListController();
-                controller.SaveReport();
+                controller.SaveCurrentReportToList();
                //todo summit to email
-
+                SendEmail();
             }
         });
 
@@ -104,6 +114,58 @@ public class TheftActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void SendEmail() {
+        ReportsListController controller = new ReportsListController();
+        ReportModel currentReport = controller.GetCurrentReport();
+
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+// set the type to 'email'
+        emailIntent .setType("vnd.android.cursor.dir/email");
+//        String to[] = {"asd@gmail.com"};
+//        emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
+// the attachment
+        for (RealmStringWrapper file : currentReport.getGalleryModel().getPhotos())
+        {
+            File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), file.getString());
+            Uri path = Uri.fromFile(filelocation);
+            emailIntent .putExtra(Intent.EXTRA_STREAM, path);
+        }
+
+
+        DriverInformationModel driverInfoModel = currentReport.getDriverInformationModel();
+
+        String result = String.format("%1 \n Registration Plate : %2 \n VehicleModel : %3 \n Vehicle Manufacture: %4 \n Vehicle Range : %5 \n Additional Information :\n %6 \n", driverInfoModel.getFullName(),
+                driverInfoModel.getRegistrationPlateNumber() ,driverInfoModel.getVehichleModel() ,driverInfoModel.getVehicleManufacture(),driverInfoModel.getVehicleRange()
+        ,driverInfoModel.getAdditionalInformation());
+
+
+        result = String.format(result + "Description : \n 1%",currentReport.getDescriptionModel().getDescription());
+
+        Geocoder geocoder;
+        List<android.location.Address> addresses;
+        geocoder = new Geocoder(this,Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String postalCode = addresses.get(0).getPostalCode();
+
+            result = String.format(result + "Location : \n Address : 1% \n City : %2 \n Post Code : %3 ", address, city ,postalCode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        result = String.format(result + " \nLatitude and Longitude : %1 & %2 \n", currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng());
+
+
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, result );
+        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        startActivity(Intent.createChooser(emailIntent , "Send email report"));
+    }
+
     private void StartGallery(){
         GalleryConfig config = new GalleryConfig.Build()
                 .limitPickPhoto(6)
