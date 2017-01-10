@@ -65,28 +65,30 @@ public class DriverInfoFragment extends Fragment {
 
         ToolBarHelper.SetUpFragmentToolBar(this,toolbar,getActivity().getString(R.string.driver_informacion_fragment_name));
 
+        summitButton.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onDriveInfoFragmentInteraction(driverInfoName.getText().toString()
+                            ,driverInfoReg.getText().toString()
+                            ,driverInfoVec.getText().toString()
+                            ,driverInfoModel.getText().toString()
+                            ,driverInfoRange.getText().toString(),
+                            driverInfoInfo.getText().toString());
+                }
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
-        if (mListener != null) {
-            mListener.onDriveInfoFragmentInteraction(driverInfoName.getText().toString()
-                    ,driverInfoReg.getText().toString()
-                    ,driverInfoVec.getText().toString()
-                    ,driverInfoModel.getText().toString()
-                    ,driverInfoRange.getText().toString(),
-                     driverInfoInfo.getText().toString());
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
