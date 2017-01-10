@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,6 +38,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.loc_city) AppCompatEditText city;
     @BindView(R.id.loc_road) AppCompatEditText road;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.driver_info_sub_btn) Button button;
     GoogleMap map;
 
     public LocationFragment() {
@@ -67,16 +69,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mListener.SummitLocation(locationModel);
+            }
+        });
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
-        if (mListener != null) {
-
-            mListener.SummitLocation(locationModel);
-        }
     }
 
 
