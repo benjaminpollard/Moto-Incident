@@ -51,7 +51,7 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_host);
 
-
+        controller = new ReportController();
         Intent intent = getIntent();
         String incidentType = intent.getStringExtra(SET_EXTRA);
 
@@ -129,16 +129,21 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
     @Override
     public void SummitLocation(LocationModel loc) {
         controller.AddLocationModelReport(ModelBuilderHelper.locationModelBuilder(loc));
+        this.finish();
     }
 
     @Override
     public void onDriveInfoFragmentInteraction(String driverInfoName, String driverInfoReg, String driverInfoVec, String driverInfoModel, String driverInfoRange, String driverInfoInfo) {
         controller.AddDriverInformasionReport(ModelBuilderHelper.DescriptionModelBuilder(driverInfoName,driverInfoReg,driverInfoModel,driverInfoVec,driverInfoRange,driverInfoInfo));
+        this.finish();
+
     }
 
     @Override
     public void onDescriptionFragmentInteraction(String desc) {
         controller.AddDescriptionToReport(ModelBuilderHelper.DescriptionModelBuilder(desc));
+        this.finish();
+
     }
 
     /**
