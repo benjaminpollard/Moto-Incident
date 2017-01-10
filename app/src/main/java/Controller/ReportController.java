@@ -22,7 +22,7 @@ import io.realm.RealmResults;
 public class ReportController {
 
     ReportModel reportModel;
-    Boolean isTest;
+    Boolean isTest = false;
 
     public ReportController ()
     {
@@ -47,6 +47,15 @@ public class ReportController {
         RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
         RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
         //always only one
+        if(currentReportResult == null || currentReportResult.size() ==0)
+        {
+            realm.beginTransaction();
+            CurrentReportModel item = realm.createObject(CurrentReportModel.class);
+            item.setCurrentReport( realm.createObject(ReportModel.class));
+            realm.commitTransaction();
+            RealmQuery<CurrentReportModel> currentReportQuerytemp = realm.where(CurrentReportModel.class);
+            currentReportResult = currentReportQuerytemp.findAll();
+        }
         CurrentReportModel currentReport = currentReportResult.get(0);
         currentReport.setCurrentReport(reportModel);
 
