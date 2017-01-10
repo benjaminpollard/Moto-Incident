@@ -2,8 +2,11 @@ package app.mono.com.monoapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.drawable.DrawableWrapper;
 import android.view.View;
 import android.widget.Button;
 
@@ -48,6 +51,13 @@ public class IncidentTypeActivity extends AppCompatActivity {
             }
         });
 
+//        Drawable img;
+//        Resources res = getResources();
+//        img = res.getDrawable(R.drawable.tempicon);
+//        img.setBounds(0, 0, 1, 1);
+//
+//        buttonOne.setCompoundDrawablesWithIntrinsicBounds(img,null,img,null);
+
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,5 +66,7 @@ public class IncidentTypeActivity extends AppCompatActivity {
                 activity.finish();
             }
         });
+
+
     }
 }
