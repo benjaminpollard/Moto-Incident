@@ -53,6 +53,7 @@ public class TheftActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theft);
 
+        controller = new ReportController();
         ButterKnife.bind(this);
         SetUpOnClicks();
 
@@ -181,7 +182,8 @@ public class TheftActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CODE && data!= null)
         {
-            controller.AddGalleryItemsToReport(ModelBuilderHelper.GalleryModelBuilder((List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS)));
+            List<String> list = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+            controller.AddGalleryItemsToReport(ModelBuilderHelper.GalleryModelBuilder(list));
 
             //not supproting video as of right now
             //list of videos of seleced

@@ -8,10 +8,12 @@ import Models.DriverInformationModel;
 import Models.GalleryModel;
 import Models.LocationModel;
 import Models.RealmLatLong;
+import Models.RealmStringWrapper;
 import Models.ReportModel;
 import app.mono.com.monoapp.R;
 import io.realm.Realm;
 import io.realm.RealmLatLongRealmProxy;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -26,51 +28,101 @@ public class ReportController {
 
     public ReportController ()
     {
-        reportModel = new ReportModel();
+
+        SetUpRealmObjects();
+    }
+
+    private void SetUpRealmObjects()
+    {
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
+        //always only one
+        if(currentReportResult.size() ==0)
+        {
+            realm.beginTransaction();
+
+            final ReportModel m = realm.createObject(ReportModel.class);
+            CurrentReportModel item = realm.createObject(CurrentReportModel.class);
+            item.setCurrentReport( m );
+            reportModel = m;
+            realm.commitTransaction();
+        }else
+        {
+            reportModel = currentReportResult.get(0).getCurrentReport();
+        }
     }
     public ReportController (Boolean Testing)
     {
         isTest = Testing;
         reportModel = new ReportModel();
     }
+
     public ReportModel GetReport()
     {
+        if(reportModel == null)
+            SetUpRealmObjects();
+
         return reportModel;
     }
-    private void SaveItem()
+    public CurrentReportModel GetCurrentReport()
     {
-        //as of right now no plans to support mocking so just skip realm as we cant init in tests
-        if(isTest)
-            return;
-
         Realm realm = Realm.getDefaultInstance();
+
         RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
         RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
-        //always only one
-        if(currentReportResult == null || currentReportResult.size() ==0)
+        if(currentReportResult.size() >0)
+        return currentReportResult.get(0);
+        else
         {
-            realm.beginTransaction();
-            CurrentReportModel item = realm.createObject(CurrentReportModel.class);
-            item.setCurrentReport( realm.createObject(ReportModel.class));
-            realm.commitTransaction();
-            RealmQuery<CurrentReportModel> currentReportQuerytemp = realm.where(CurrentReportModel.class);
-            currentReportResult = currentReportQuerytemp.findAll();
-        }
-        CurrentReportModel currentReport = currentReportResult.get(0);
-        currentReport.setCurrentReport(reportModel);
+            SetUpRealmObjects();
+            RealmQuery<CurrentReportModel> currentReportQueryT = realm.where(CurrentReportModel.class);
+            RealmResults<CurrentReportModel>currentReportResultT = currentReportQuery.findAll();
+            return currentReportResultT.get(0);
 
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(currentReport);
-        realm.commitTransaction();
+        }
     }
+
+    private void SetUpReportObject()
+    {
+
+    }
+
     public void AddGalleryItemsToReport(GalleryModel galleryModel)
     {
         if(galleryModel == null)
             return;
 
-        reportModel.setGalleryModel(galleryModel);
+        Realm realm = Realm.getDefaultInstance();
 
-        SaveItem();
+        RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
+
+        CurrentReportModel n = currentReportResult.get(0);
+
+
+        realm.beginTransaction();
+
+        GalleryModel realmObj = realm.createObject(GalleryModel.class);
+        RealmList<RealmStringWrapper> realmPhotoList = new RealmList<RealmStringWrapper>();
+        for (RealmStringWrapper photo : galleryModel.getPhotos())
+        {
+            RealmStringWrapper temp = realm.createObject(RealmStringWrapper.class);
+            temp.setString(photo.getString());
+            realmPhotoList.add(temp);
+        }
+        realmObj.setPhotos(realmPhotoList);
+        n.getCurrentReport().setGalleryModel(realmObj);
+
+
+        realm.copyToRealm(n);
+
+        realm.commitTransaction();
+        RealmQuery<CurrentReportModel> currentReportQueryv = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResultv = currentReportQueryv.findAll();
+
+
     }
 
     public void AddDescriptionToReport(DescriptionModel descriptionModel)
@@ -78,9 +130,22 @@ public class ReportController {
         if(descriptionModel == null)
             return;
 
-        reportModel.setDescriptionModel(descriptionModel);
+        Realm realm = Realm.getDefaultInstance();
 
-        SaveItem();
+        RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
+
+        realm.beginTransaction();
+
+        DescriptionModel m = realm.copyToRealm(descriptionModel);
+        GetCurrentReport().getCurrentReport().setDescriptionModel(m);
+        currentReportResult.get(0).getCurrentReport().setDescriptionModel(m);
+
+        realm.commitTransaction();
+
+        RealmQuery<CurrentReportModel> currentReportQuery2 = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult2 = currentReportQuery2.findAll();
+
     }
 
     public void AddLocationModelReport(RealmLatLong locationModel)
@@ -88,9 +153,8 @@ public class ReportController {
         if(locationModel == null)
             return;
 
-        reportModel.setLocationModel(locationModel);
+        GetReport().setLocationModel(locationModel);
 
-        SaveItem();
 
     }
 
@@ -99,9 +163,8 @@ public class ReportController {
         if(driverInformationModel == null)
             return;
 
-        reportModel.setDriverInformationModel(driverInformationModel);
+        GetReport().setDriverInformationModel(driverInformationModel);
 
-        SaveItem();
     }
 
     public String ReturnStringForNoFilledInfo(Context context)

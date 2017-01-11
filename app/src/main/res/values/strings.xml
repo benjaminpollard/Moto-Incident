@@ -44,5 +44,6 @@
     <string name="info_not_enetered">Driver Information not filled out</string>
     <string name="gallery_not_enetered">Gallery not filled out</string>
     <string name="no_reports_text">No Past Reports press the plus to start a new report</string>
+    <string name="summit_location_error">"A problem has occurred with adding the Location "</string>
 
 </resources>

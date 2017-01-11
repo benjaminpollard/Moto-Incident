@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +129,10 @@ public class FragmentHostActivity extends AppCompatActivity implements LocationF
 
     @Override
     public void SummitLocation(LocationModel loc) {
+        if(loc == null || loc.getLatLong() == null)
+        {
+            Toast.makeText(this, R.string.summit_location_error,Toast.LENGTH_SHORT).show();
+        }
         controller.AddLocationModelReport(ModelBuilderHelper.locationModelBuilder(loc));
         this.finish();
     }

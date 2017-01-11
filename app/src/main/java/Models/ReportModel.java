@@ -39,8 +39,8 @@ public class ReportModel extends RealmObject {
         return descriptionModel;
     }
 
-    public void setDescriptionModel(DescriptionModel descriptionModel) {
-        this.descriptionModel = descriptionModel;
+    public void setDescriptionModel(DescriptionModel descriptionModelp) {
+        descriptionModel = descriptionModelp;
     }
 
     RealmLatLong locationModel;

@@ -1,6 +1,8 @@
 package Models;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Ben on 05/01/2017.
@@ -8,15 +10,20 @@ import io.realm.RealmObject;
 
 public class CurrentReportModel extends RealmObject {
 
+
+
     public ReportModel getCurrentReport() {
-        if(currentReport == null)
-            currentReport = new ReportModel();
 
         return currentReport;
     }
 
-    public void setCurrentReport(ReportModel currentReport) {
-        this.currentReport = currentReport;
+    public CurrentReportModel ()
+    {
+        currentReport = new ReportModel();
+    }
+
+    public void setCurrentReport(ReportModel currentReportp) {
+        currentReport = currentReportp;
     }
 
     ReportModel currentReport;
