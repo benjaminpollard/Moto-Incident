@@ -40,6 +40,10 @@
             android:label="@string/title_activity_theft"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".PastReportsActivity"
+            android:label="@string/title_past_reports"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".FragmentHostActivity"
             android:label="@string/title_activity_fragment_host"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -57,7 +61,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="your_key" />
 
-        <activity android:name=".PastReportsActivity"></activity>
     </application>
 
 </manifest>
