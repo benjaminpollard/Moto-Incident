@@ -71,6 +71,7 @@ public class PastReportsAdapter extends RecyclerView.Adapter<PastReportsAdapter.
 
         } catch (IOException e) {
             e.printStackTrace();
+            holder.loc.setText("Location Not set");
         }
 
         File sd = Environment.getExternalStorageDirectory();
