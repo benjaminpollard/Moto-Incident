@@ -3,14 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="1">
+
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:background="@color/cardview_dark_background"
         android:layout_height="60dp"
-        card_view:cardCornerRadius="4dp"
-        android:layout_weight="0.37">
+        card_view:cardCornerRadius="8dp"
+       >
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal" android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,12 +28,19 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:padding="4dp">
             <TextView
+                android:textSize="16sp"
                 android:id="@+id/past_info_loc"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:maxLines="1"
+                android:ellipsize="end"/>
             <TextView
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:id="@+id/past_info_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
