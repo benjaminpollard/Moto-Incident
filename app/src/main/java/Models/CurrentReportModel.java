@@ -19,7 +19,6 @@ public class CurrentReportModel extends RealmObject {
 
     public CurrentReportModel ()
     {
-        currentReport = new ReportModel();
     }
 
     public void setCurrentReport(ReportModel currentReportp) {
