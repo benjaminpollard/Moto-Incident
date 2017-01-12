@@ -45,5 +45,7 @@
     <string name="gallery_not_enetered">Gallery not filled out</string>
     <string name="no_reports_text">No Past Reports press the plus to start a new report</string>
     <string name="summit_location_error">"A problem has occurred with adding the Location "</string>
+    <string name="photo_picker_hint">photo of incident</string>
+    <string name="title_past_reports">Past Reports</string>
 
 </resources>
