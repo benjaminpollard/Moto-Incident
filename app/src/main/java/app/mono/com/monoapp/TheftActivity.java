@@ -104,6 +104,8 @@ public class TheftActivity extends AppCompatActivity {
                 controller.SaveCurrentReportToList();
                //todo summit to email
                 SendEmail();
+                ReportsListController reportsList = new ReportsListController();
+                reportsList.SaveCurrentReportToList();
             }
         });
 
@@ -135,13 +137,14 @@ public class TheftActivity extends AppCompatActivity {
 
 
         DriverInformationModel driverInfoModel = currentReport.getDriverInformationModel();
-
-        String result = String.format("%1 \n Registration Plate : %2 \n VehicleModel : %3 \n Vehicle Manufacture: %4 \n Vehicle Range : %5 \n Additional Information :\n %6 \n", driverInfoModel.getFullName(),
-                driverInfoModel.getRegistrationPlateNumber() ,driverInfoModel.getVehichleModel() ,driverInfoModel.getVehicleManufacture(),driverInfoModel.getVehicleRange()
-        ,driverInfoModel.getAdditionalInformation());
-
-
-        result = String.format(result + "Description : \n 1%",currentReport.getDescriptionModel().getDescription());
+        String result = "";
+        if(driverInfoModel != null )
+        {
+            result = String.format("%1 \n Registration Plate : %s \n VehicleModel : %s \n Vehicle Manufacture: %s \n Vehicle Range : %s \n Additional Information :\n %s \n", driverInfoModel.getFullName(),
+                    driverInfoModel.getRegistrationPlateNumber() ,driverInfoModel.getVehichleModel() ,driverInfoModel.getVehicleManufacture(),driverInfoModel.getVehicleRange()
+                    ,driverInfoModel.getAdditionalInformation());
+        }
+        result =  String.format( "Description : \n %s ", currentReport.getDescriptionModel().getDescription());
 
         Geocoder geocoder;
         List<android.location.Address> addresses;
@@ -153,13 +156,14 @@ public class TheftActivity extends AppCompatActivity {
             String city = addresses.get(0).getLocality();
             String postalCode = addresses.get(0).getPostalCode();
 
-            result = String.format(result + "Location : \n Address : 1% \n City : %2 \n Post Code : %3 ", address, city ,postalCode);
+            result = String.format(result + "Location : \n Address : %s \n City : %s \n Post Code : %s ", address, city ,postalCode);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        result = String.format(result + " \nLatitude and Longitude : %1 & %2 \n", currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng());
+        if(currentReport.getLocationModel() != null)
+        result = String.format(result + " \nLatitude and Longitude : %s & %s \n", currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng());
 
 
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, result );
