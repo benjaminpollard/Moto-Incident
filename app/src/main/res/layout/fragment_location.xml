@@ -1,0 +1,71 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:orientation="vertical"
+    tools:context="Fragments.LocationFragment">
+
+     <include layout="@layout/content_fragment_toolbar" />
+
+
+     <LinearLayout android:layout_width="match_parent"
+         android:layout_height="160dp"
+         android:orientation="vertical"
+         android:background="@android:color/black">
+         <android.support.v7.widget.AppCompatEditText
+             android:id="@+id/loc_road"
+             android:layout_width="match_parent"
+             android:layout_height="44dp"
+             android:hint="@string/loc_street_or_road"
+             android:layout_margin="16dp"
+             android:background="@drawable/roundedbox"
+             android:padding="4dp"
+             android:gravity="top"
+             android:layout_marginLeft="4dp"
+             android:layout_marginTop="4dp"
+             android:layout_marginRight="4dp"
+             android:layout_marginBottom="4dp" />
+         <android.support.v7.widget.AppCompatEditText
+             android:id="@+id/loc_city"
+             android:layout_width="match_parent"
+             android:layout_height="44dp"
+             android:hint="@string/loc_city"
+             android:layout_margin="16dp"
+             android:background="@drawable/roundedbox"
+             android:padding="4dp"
+             android:gravity="top"
+             android:layout_marginLeft="4dp"
+             android:layout_marginTop="4dp"
+             android:layout_marginRight="4dp"
+             android:layout_marginBottom="4dp" />
+     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+     <com.google.android.gms.maps.MapView
+        android:id="@+id/loc_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6.00"/>
+
+        <Button
+
+            style="@style/ActionButton"
+            android:elevation="2dp"
+            android:textAlignment="center"
+            android:textSize="13sp"
+
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sumbit"
+            android:id="@+id/driver_info_sub_btn"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="118dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+    </LinearLayout>

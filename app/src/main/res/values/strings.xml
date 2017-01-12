@@ -1,17 +1,51 @@
 <resources>
-    <string name="app_name">MonoApp</string>
+    <string name="app_name">MotoApp</string>
     <string name="action_settings">Settings</string>
 
     <string name="incidenttype_buttton_one">THEFT</string>
     <string name="incidenttype_buttton_two">COLLISON</string>
     <string name="incidenttype_buttton_three">BREAKDOWN</string>
     <string name="incidenttype_buttton_four">CYCLISTINCEDENT</string>
+
     <string name="incidenttype_buttton_back">BACK</string>
+
     <string name="title_activity_theft">TheftActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="home_screen">View Saved Reports</string>
+
+    <string name="sumbit">Sumbit</string>
+    <string name="descrip_hint_text">Enter your description here</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="driver_info_name">Full Name</string>
+    <string name="driver_info_reg">Registration Plate Number</string>
+    <string name="driver_info_vec">Vehicle Manufacturer</string>
+    <string name="driver_info_vehicle_range">Vehicle Range</string>
+    <string name="driver_info_model">Vehicle Model</string>
+    <string name="driver_info_add_info">Additional Information</string>
+    <string name="driver_info_sumit_btn">Submit Information</string>
+    <string name="drive_informasion">Drive Informasion</string>
+    <string name="add_location">Add Location</string>
+    <string name="add_image">Add Image</string>
+    <string name="descrition">Descrition</string>
+    <string name="title_activity_fragment_host">FragmentHostActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="loc_street_or_road">Street or Road</string>
+    <string name="loc_city">City</string>
 
+    <!-- Fragment Names -->
+    <string name="description_fragment_name">Description</string>
+    <string name="location_fragment_name">Location</string>
+    <string name="driver_informacion_fragment_name">Driver Information</string>
+
+    <!-- Fragment Names -->
+    <string name="description_not_enetered">Description not filled out </string>
+    <string name="location_not_enetered">Location not filled out</string>
+    <string name="info_not_enetered">Driver Information not filled out</string>
+    <string name="gallery_not_enetered">Gallery not filled out</string>
+    <string name="no_reports_text">No Past Reports press the plus to start a new report</string>
+    <string name="summit_location_error">"A problem has occurred with adding the Location "</string>
+    <string name="photo_picker_hint">photo of incident</string>
+    <string name="title_past_reports">Past Reports</string>
 
 </resources>

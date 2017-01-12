@@ -1,172 +1,218 @@
 package app.mono.com.monoapp;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Geocoder;
 import android.net.Uri;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 
-import android.widget.TextView;
+import com.google.android.gms.identity.intents.Address;
+import com.google.android.gms.maps.model.LatLng;
+import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.tangxiaolv.telegramgallery.GalleryConfig;
 
-public class TheftActivity extends AppCompatActivity implements  DescriptionFragment.OnFragmentInteractionListener {
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+import Controller.ReportController;
+import Controller.ReportsListController;
+import Helpers.ModelBuilderHelper;
+import Models.DriverInformationModel;
+import Models.GalleryModel;
+import Models.RealmStringWrapper;
+import Models.ReportModel;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmList;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+public class TheftActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE = 228;
+    @BindView(R.id.button_theft_des) Button description;
+    @BindView(R.id.button_theft_image) Button addImage;
+    @BindView(R.id.button_theft_loc) Button locasion;
+    @BindView(R.id.button_theft_info) Button info;
+    @BindView(R.id.button_theft_back) Button back;
+    @BindView(R.id.button_theft_summit) Button sumbit;
+
+    private ReportController controller;
+    private ReportsListController reportsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theft);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        reportsList = new ReportsListController();
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        controller = new ReportController();
+        ButterKnife.bind(this);
+        SetUpOnClicks();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(reportsList !=null)
+        reportsList.RemoveCurrenrReport();
+    }
+
+    private void SetIntentAndStartingPage(Context context, int start)
+    {
+        Intent intent = new Intent(context,FragmentHostActivity.class);
+        intent.putExtra(FragmentHostActivity.SET_EXTRA,FragmentHostActivity.INCDIENT_TYPE_THEIFT);
+        intent.putExtra(FragmentHostActivity.SET_PAGE,start);
+
+        startActivity(intent);
+    }
+    private void SetUpOnClicks()
+    {
+        description.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                SetIntentAndStartingPage(v.getContext(),0);
             }
         });
 
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartGallery();
+            }
+        });
+
+        locasion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetIntentAndStartingPage(v.getContext(),2);
+            }
+        });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetIntentAndStartingPage(v.getContext(),1);
+            }
+        });
+
+        sumbit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               //todo summit to email
+                SendEmail();
+                reportsList.SaveCurrentReportToList();
+
+                reportsList.RemoveCurrenrReport();
+
+                Activity act = (Activity) v.getContext();
+                act.finish();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Activity activity = (Activity) v.getContext();
+                activity.finish();
+            }
+        });
     }
 
+    private void SendEmail() {
+        ReportsListController controller = new ReportsListController();
+        ReportModel currentReport = controller.GetCurrentReport();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_theft, menu);
-        return true;
-    }
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+// set the type to 'email'
+        emailIntent .setType("vnd.android.cursor.dir/email");
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_theft, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position + 1 == 1)
+// the attachment
+        if(currentReport.getGalleryModel() != null)
+        {
+            for (RealmStringWrapper file : currentReport.getGalleryModel().getPhotos())
             {
-                return DescriptionFragment.newInstance(  );
+                File filet = new File(file.getString());
+                Uri uri = Uri.fromFile(filet);
+                emailIntent.putExtra(Intent.EXTRA_STREAM,  uri);
             }
-            return PlaceholderFragment.newInstance(position + 1);
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
+
+        DriverInformationModel driverInfoModel = currentReport.getDriverInformationModel();
+        String result = "";
+        if(driverInfoModel != null )
+        {
+            result = String.format("%1 \n Registration Plate : %s \n VehicleModel : %s \n Vehicle Manufacture: %s \n Vehicle Range : %s \n Additional Information :\n %s \n", driverInfoModel.getFullName(),
+                    driverInfoModel.getRegistrationPlateNumber() ,driverInfoModel.getVehichleModel() ,driverInfoModel.getVehicleManufacture(),driverInfoModel.getVehicleRange()
+                    ,driverInfoModel.getAdditionalInformation());
+        }
+        result =  String.format(result + "Description : \n %s ", currentReport.getDescriptionModel().getDescription());
+
+
+        Geocoder geocoder;
+        List<android.location.Address> addresses;
+        geocoder = new Geocoder(this,Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String postalCode = addresses.get(0).getPostalCode();
+
+            result = String.format(result + "Location : \n Address : %s \n City : %s \n Post Code : %s ", address, city ,postalCode);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
+        if(currentReport.getLocationModel() != null)
+        result = String.format(result + " \nLatitude and Longitude : %s & %s \n", currentReport.getLocationModel().getLat(), currentReport.getLocationModel().getLng());
+
+
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, result );
+        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        startActivity(Intent.createChooser(emailIntent , "Send email report"));
+    }
+
+    private void StartGallery(){
+        GalleryConfig config = new GalleryConfig.Build()
+                .limitPickPhoto(6)
+                .singlePhoto(false)
+                .hintOfPick(getString(R.string.photo_picker_hint))
+                .filterMimeTypes(new String[]{"image/jpeg"})
+                .build();
+
+        GalleryActivity.openActivity(this, REQUEST_CODE, config);
+    }
+
+    //process result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && data!= null)
+        {
+            List<String> list = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+            controller.AddGalleryItemsToReport(ModelBuilderHelper.GalleryModelBuilder(list));
+
+            //not supproting video as of right now
+            //list of videos of seleced
+           // List<String> vides = (List<String>) data.getSerializableExtra(GalleryActivity.VIDEO);
         }
     }
+
 }
