@@ -47,17 +47,29 @@ public class TheftActivity extends AppCompatActivity {
     @BindView(R.id.button_theft_summit) Button sumbit;
 
     private ReportController controller;
+    private ReportsListController reportsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theft);
 
+        reportsList = new ReportsListController();
+
         controller = new ReportController();
         ButterKnife.bind(this);
         SetUpOnClicks();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(reportsList !=null)
+        reportsList.RemoveCurrenrReport();
+    }
+
     private void SetIntentAndStartingPage(Context context, int start)
     {
         Intent intent = new Intent(context,FragmentHostActivity.class);
@@ -92,20 +104,22 @@ public class TheftActivity extends AppCompatActivity {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetIntentAndStartingPage(v.getContext(),3);
+                SetIntentAndStartingPage(v.getContext(),1);
             }
         });
 
         sumbit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //save to dabase
-                ReportsListController controller = new ReportsListController();
-                controller.SaveCurrentReportToList();
+
                //todo summit to email
                 SendEmail();
-                ReportsListController reportsList = new ReportsListController();
                 reportsList.SaveCurrentReportToList();
+
+                reportsList.RemoveCurrenrReport();
+
+                Activity act = (Activity) v.getContext();
+                act.finish();
             }
         });
 
@@ -127,14 +141,18 @@ public class TheftActivity extends AppCompatActivity {
         emailIntent .setType("vnd.android.cursor.dir/email");
 
 // the attachment
-        for (RealmStringWrapper file : currentReport.getGalleryModel().getPhotos())
+        if(currentReport.getGalleryModel() != null)
         {
-            File filet = new File(file.getString());
-            Uri uri = Uri.fromFile(filet);
-            emailIntent.putExtra(Intent.EXTRA_STREAM,  uri);
+            for (RealmStringWrapper file : currentReport.getGalleryModel().getPhotos())
+            {
+                File filet = new File(file.getString());
+                Uri uri = Uri.fromFile(filet);
+                emailIntent.putExtra(Intent.EXTRA_STREAM,  uri);
+            }
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
 
         DriverInformationModel driverInfoModel = currentReport.getDriverInformationModel();
         String result = "";
@@ -176,9 +194,10 @@ public class TheftActivity extends AppCompatActivity {
         GalleryConfig config = new GalleryConfig.Build()
                 .limitPickPhoto(6)
                 .singlePhoto(false)
-                .hintOfPick("photo of incident")
+                .hintOfPick(getString(R.string.photo_picker_hint))
                 .filterMimeTypes(new String[]{"image/jpeg"})
                 .build();
+
         GalleryActivity.openActivity(this, REQUEST_CODE, config);
     }
 
