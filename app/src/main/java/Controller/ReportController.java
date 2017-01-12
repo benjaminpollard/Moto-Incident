@@ -39,18 +39,14 @@ public class ReportController {
         RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
         RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
         //always only one
-        if(currentReportResult.size() ==0)
+        if(currentReportResult.size() == 0)
         {
             realm.beginTransaction();
 
             final ReportModel m = realm.createObject(ReportModel.class);
             CurrentReportModel item = realm.createObject(CurrentReportModel.class);
             item.setCurrentReport( m );
-            reportModel = m;
             realm.commitTransaction();
-        }else
-        {
-            reportModel = currentReportResult.get(0).getCurrentReport();
         }
     }
     public ReportController (Boolean Testing)
@@ -59,29 +55,15 @@ public class ReportController {
         reportModel = new ReportModel();
     }
 
-    public ReportModel GetReport()
-    {
-        if(reportModel == null)
-            SetUpRealmObjects();
-
-        return reportModel;
-    }
     public CurrentReportModel GetCurrentReport()
     {
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
         RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
-        if(currentReportResult.size() >0)
-        return currentReportResult.get(0);
-        else
-        {
-            SetUpRealmObjects();
-            RealmQuery<CurrentReportModel> currentReportQueryT = realm.where(CurrentReportModel.class);
-            RealmResults<CurrentReportModel>currentReportResultT = currentReportQuery.findAll();
-            return currentReportResultT.get(0);
 
-        }
+        return currentReportResult.get(0);
+
     }
 
 
@@ -112,11 +94,9 @@ public class ReportController {
         n.getCurrentReport().setGalleryModel(realmObj);
 
 
-        realm.copyToRealm(n);
+       // realm.copyToRealm(n);
 
         realm.commitTransaction();
-        RealmQuery<CurrentReportModel> currentReportQueryv = realm.where(CurrentReportModel.class);
-        RealmResults<CurrentReportModel>currentReportResultv = currentReportQueryv.findAll();
 
 
     }
@@ -133,9 +113,8 @@ public class ReportController {
 
         realm.beginTransaction();
 
-        DescriptionModel m = realm.copyToRealm(descriptionModel);
-//        GetCurrentReport().getCurrentReport().setDescriptionModel(m);
-        currentReportResult.get(0).getCurrentReport().setDescriptionModel(m);
+
+        currentReportResult.get(0).getCurrentReport().setDescriptionModel(realm.copyToRealm(descriptionModel));
 
         realm.commitTransaction();
 

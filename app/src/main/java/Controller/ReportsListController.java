@@ -39,16 +39,25 @@ public class ReportsListController {
 
     public void  SaveCurrentReportToList()
     {
-        ReportModel currentreport =  GetCurrentReport();
+//        ReportModel currentreport =  GetCurrentReport();
+//
+//        Realm realm = Realm.getDefaultInstance();
+//        RealmQuery<ReportModel> items = Realm.getDefaultInstance().where(ReportModel.class);
+//        RealmResults<ReportModel> results = items.findAll();
+//
+//        realm.beginTransaction();
+//        realm.copyToRealm(currentreport);
+//        realm.commitTransaction();
 
+
+    }
+    public void RemoveCurrenrReport()
+    {
         Realm realm = Realm.getDefaultInstance();
-        List<ReportModel> reportsList =  GetAllReports();
-
         realm.beginTransaction();
-        reportsList.add(realm.copyToRealm(currentreport));
+        realm.delete(CurrentReportModel.class);
         realm.commitTransaction();
     }
-
     public ReportModel  GetCurrentReport()
     {
         Realm realm = Realm.getDefaultInstance();
