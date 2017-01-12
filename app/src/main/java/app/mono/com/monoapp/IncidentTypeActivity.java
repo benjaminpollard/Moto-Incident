@@ -50,7 +50,30 @@ public class IncidentTypeActivity extends AppCompatActivity {
                 activity.startActivity(new Intent(activity,TheftActivity.class));
             }
         });
+        buttonTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Activity activity = (IncidentTypeActivity) v.getContext();
+                activity.startActivity(new Intent(activity,TheftActivity.class));
+            }
+        });
+        buttonThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Activity activity = (IncidentTypeActivity) v.getContext();
+                activity.startActivity(new Intent(activity,TheftActivity.class));
+            }
+        });
+        buttonFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Activity activity = (IncidentTypeActivity) v.getContext();
+                activity.startActivity(new Intent(activity,TheftActivity.class));
+            }
+        });
 //        Drawable img;
 //        Resources res = getResources();
 //        img = res.getDrawable(R.drawable.tempicon);
