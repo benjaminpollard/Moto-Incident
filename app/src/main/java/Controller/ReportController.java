@@ -84,10 +84,6 @@ public class ReportController {
         }
     }
 
-    private void SetUpReportObject()
-    {
-
-    }
 
     public void AddGalleryItemsToReport(GalleryModel galleryModel)
     {
@@ -138,7 +134,7 @@ public class ReportController {
         realm.beginTransaction();
 
         DescriptionModel m = realm.copyToRealm(descriptionModel);
-        GetCurrentReport().getCurrentReport().setDescriptionModel(m);
+//        GetCurrentReport().getCurrentReport().setDescriptionModel(m);
         currentReportResult.get(0).getCurrentReport().setDescriptionModel(m);
 
         realm.commitTransaction();
@@ -153,7 +149,18 @@ public class ReportController {
         if(locationModel == null)
             return;
 
-        GetReport().setLocationModel(locationModel);
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
+
+        realm.beginTransaction();
+
+        RealmLatLong m = realm.copyToRealm(locationModel);
+//        GetCurrentReport().getCurrentReport().setLocationModel(m);
+        currentReportResult.get(0).getCurrentReport().setLocationModel(m);
+
+        realm.commitTransaction();
 
 
     }
@@ -163,7 +170,18 @@ public class ReportController {
         if(driverInformationModel == null)
             return;
 
-        GetReport().setDriverInformationModel(driverInformationModel);
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<CurrentReportModel> currentReportQuery = realm.where(CurrentReportModel.class);
+        RealmResults<CurrentReportModel>currentReportResult = currentReportQuery.findAll();
+
+        realm.beginTransaction();
+
+        DriverInformationModel m = realm.copyToRealm(driverInformationModel);
+//        GetCurrentReport().getCurrentReport().setLocationModel(m);
+        currentReportResult.get(0).getCurrentReport().setDriverInformationModel(m);
+
+        realm.commitTransaction();
 
     }
 
