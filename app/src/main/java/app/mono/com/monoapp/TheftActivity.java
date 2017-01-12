@@ -125,16 +125,16 @@ public class TheftActivity extends AppCompatActivity {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 // set the type to 'email'
         emailIntent .setType("vnd.android.cursor.dir/email");
-//        String to[] = {"asd@gmail.com"};
-//        emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
+
 // the attachment
         for (RealmStringWrapper file : currentReport.getGalleryModel().getPhotos())
         {
-            File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), file.getString());
-            Uri path = Uri.fromFile(filelocation);
-            emailIntent .putExtra(Intent.EXTRA_STREAM, path);
+            File filet = new File(file.getString());
+            Uri uri = Uri.fromFile(filet);
+            emailIntent.putExtra(Intent.EXTRA_STREAM,  uri);
         }
-
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         DriverInformationModel driverInfoModel = currentReport.getDriverInformationModel();
         String result = "";
@@ -144,7 +144,8 @@ public class TheftActivity extends AppCompatActivity {
                     driverInfoModel.getRegistrationPlateNumber() ,driverInfoModel.getVehichleModel() ,driverInfoModel.getVehicleManufacture(),driverInfoModel.getVehicleRange()
                     ,driverInfoModel.getAdditionalInformation());
         }
-        result =  String.format( "Description : \n %s ", currentReport.getDescriptionModel().getDescription());
+        result =  String.format(result + "Description : \n %s ", currentReport.getDescriptionModel().getDescription());
+
 
         Geocoder geocoder;
         List<android.location.Address> addresses;
