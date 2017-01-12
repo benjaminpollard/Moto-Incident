@@ -69,19 +69,23 @@ public class PastReportsAdapter extends RecyclerView.Adapter<PastReportsAdapter.
 
             holder.loc.setText(address);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             holder.loc.setText("Location Not set");
         }
 
-        File sd = Environment.getExternalStorageDirectory();
-        if(model.getGalleryModel().getPhotos() != null && model.getGalleryModel().getPhotos().size() > 0 )
+        //File sd = Environment.getExternalStorageDirectory();
+        if(model.getGalleryModel() != null && model.getGalleryModel().getPhotos().size() > 0 )
         {
-            File image = new File(sd, model.getGalleryModel().getPhotos().get(0).getString());
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-            bitmap = Bitmap.createScaledBitmap(bitmap,60,60,true);
-            holder.imageView.setImageBitmap(bitmap);
+            File image = new File( model.getGalleryModel().getPhotos().get(0).getString());
+            if(image.exists())
+            {
+                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
+                bitmap = Bitmap.createScaledBitmap(bitmap,60,60,true);
+                holder.imageView.setImageBitmap(bitmap);
+
+            }
+          //  BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         }else
         {
             holder.imageView.setImageDrawable(holder.imageView.getContext().getResources().getDrawable(R.drawable.popup_fixed));
